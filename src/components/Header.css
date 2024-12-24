@@ -1,0 +1,36 @@
+.App-header {
+    background-color: lightblue;
+    height: 80px;
+    width: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    box-sizing: border-box;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+}
+
+.App-header h1 {
+    margin: 0;
+    font-size: 24px;
+}
+
+.App-header nav ul {
+    list-style: none;
+    display: flex;
+    margin: 0;
+    padding: 0;
+}
+
+.App-header nav ul li {
+    margin-left: 20px;
+}
+
+.App-header nav ul li a {
+    text-decoration: none;
+    color: black;
+    font-size: 18px;
+}
