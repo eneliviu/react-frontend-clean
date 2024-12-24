@@ -62,6 +62,12 @@ const SignUpForm = () => {
                                 onChange={handleChange}
                             />
                         </Form.Group>
+                        {errors.username?.map((message, idx) => (
+                            <Alert variant="warning" key={idx}>
+                                {message}
+                            </Alert>
+                        ))}
+                        ;
                         <Form.Group className="mb-3" controlId="password">
                             <Form.Label className="d-none">Password</Form.Label>
                             <Form.Control
@@ -73,12 +79,6 @@ const SignUpForm = () => {
                                 onChange={handleChange}
                             />
                         </Form.Group>
-                        {errors.username?.map((message, idx) => (
-                            <Alert variant="warning" key={idx}>
-                                {message}
-                            </Alert>
-                        ))}
-                        ;
                         <Form.Group className="mb-3" controlId="password2">
                             <Form.Label className="d-none">
                                 Confirm password
