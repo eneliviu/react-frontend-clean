@@ -20,7 +20,7 @@ const NavBar = () => {
                     <Nav className="ms-auto text-start">
                         <NavLink
                             to="/"
-                            exact
+                            exact="true"
                             className={({ isActive }) =>
                                 `${styles.NavLink} ${
                                     isActive ? styles.Active : ""
@@ -30,7 +30,7 @@ const NavBar = () => {
                             <i className="fas fa-home"></i>Home
                         </NavLink>
                         <NavLink
-                            exact
+                            exact="true"
                             className={({ isActive }) =>
                                 `${styles.NavLink} ${
                                     isActive ? styles.Active : ""
@@ -41,7 +41,7 @@ const NavBar = () => {
                             <i className="fas fa-sign-in-alt"></i>Sign in
                         </NavLink>
                         <NavLink
-                            exact
+                            exact="true"
                             className={({ isActive }) =>
                                 `${styles.NavLink} ${
                                     isActive ? styles.Active : ""
