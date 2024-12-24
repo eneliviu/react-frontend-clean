@@ -6,6 +6,8 @@ import Button from "react-bootstrap/Button";
 import NavBar from "./components/NavBar";
 import Footer from "./components/Footer";
 import { Route, Routes } from "react-router-dom";
+import "./api/axiosDefaults";
+import SignUpForm from "./pages/auth/SignUpForm";
 
 function App() {
     return (
@@ -22,7 +24,7 @@ function App() {
                     <Route
                         exact
                         path="/signup"
-                        element={<h1>Sign-up page</h1>}
+                        element={<SignUpForm />}
                     />
                     <Route path="*" element={<p>Page not found</p>} />
                 </Routes>
