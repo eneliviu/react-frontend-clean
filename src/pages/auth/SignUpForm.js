@@ -62,11 +62,12 @@ const SignUpForm = () => {
                                 onChange={handleChange}
                             />
                         </Form.Group>
-                        {errors.username?.map((message, idx) => (
-                            <Alert variant="warning" key={idx}>
-                                {message}
-                            </Alert>
-                        ))}
+                        {errors.username &&
+                            errors.username.map((message, idx) => (
+                                <Alert variant="warning" key={idx}>
+                                    {message}
+                                </Alert>
+                            ))}
                         ;
                         <Form.Group className="mb-3" controlId="password">
                             <Form.Label className="d-none">Password</Form.Label>
@@ -79,6 +80,12 @@ const SignUpForm = () => {
                                 onChange={handleChange}
                             />
                         </Form.Group>
+                        {errors.password1 &&
+                            errors.password1.map((message, idx) => (
+                                <Alert variant="warning" key={idx}>
+                                    {message}
+                                </Alert>
+                            ))}
                         <Form.Group className="mb-3" controlId="password2">
                             <Form.Label className="d-none">
                                 Confirm password
@@ -92,6 +99,12 @@ const SignUpForm = () => {
                                 onChange={handleChange}
                             />
                         </Form.Group>
+                        {errors.password2 &&
+                            errors.password2.map((message, idx) => (
+                                <Alert variant="warning" key={idx}>
+                                    {message}
+                                </Alert>
+                            ))}
                         <Button
                             className={`${btnStyles.Button}  ${btnStyles.Wide} ${btnStyles.Bright}`}
                             type="submit"
