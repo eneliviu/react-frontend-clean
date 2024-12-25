@@ -8,6 +8,7 @@ import Footer from "./components/Footer";
 import { Route, Routes } from "react-router-dom";
 import "./api/axiosDefaults";
 import SignUpForm from "./pages/auth/SignUpForm";
+import SignInForm from "./pages/auth/SignInForm";
 
 function App() {
     return (
@@ -19,7 +20,7 @@ function App() {
                     <Route
                         exact
                         path="/signin"
-                        element={<h1>Sign-in page</h1>}
+                        element={<SignInForm />}
                     />
                     <Route
                         exact

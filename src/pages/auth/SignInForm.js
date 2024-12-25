@@ -14,42 +14,40 @@ import {
 } from "react-bootstrap";
 import axios from "axios";
 
-const SignUpForm = () => {
-    const [signUpData, setSignUpData] = useState({
+function SignInForm() {
+    //   Add your component logic here
+    const [signInData, setSignInData] = useState({
         username: "",
-        password1: "",
-        password2: "",
+        password: "",
     });
-    const { username, password1, password2 } = signUpData;
-
+    const { username, password } = signInData;
     const [errors, setErrors] = useState({});
-
     const history = useNavigate();
 
     const handleChange = (e) => {
-        setSignUpData({
-            ...signUpData,
+        setSignInData({
+            ...signInData,
             [e.target.name]: e.target.value,
         });
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log("Submitting form with data:", signUpData);
+        console.log("Submitting form with data:", signInData);
         try {
-            await axios.post("/dj-rest-auth/registration/", signUpData);
-            history("/signin");
+            await axios.post("/dj-rest-auth/login/", signInData);
+            history("/");
         } catch (err) {
+            console.error(err);
             setErrors(err.response?.data);
         }
     };
 
     return (
         <Row className={styles.Row}>
-            <Col className="my-auto py-2 p-md-2" md={6}>
+            <Col className="my-auto p-0 p-md-2" md={6}>
                 <Container className={`${appStyles.Content} p-4 `}>
-                    <h1 className={styles.Header}>sign up</h1>
-
+                    <h1 className={styles.Header}>sign in</h1>
                     <Form onSubmit={handleSubmit}>
                         <Form.Group className="mb-3" controlId="username">
                             <Form.Label className="d-none">username</Form.Label>
@@ -68,42 +66,25 @@ const SignUpForm = () => {
                                     {message}
                                 </Alert>
                             ))}
+
                         <Form.Group className="mb-3" controlId="password">
-                            <Form.Label className="d-none">Password</Form.Label>
+                            <Form.Label className="d-none">username</Form.Label>
                             <Form.Control
                                 className={styles.Input}
-                                type="password"
+                                type="text"
                                 placeholder="Password"
-                                name="password1"
-                                value={password1}
+                                name="password"
+                                value={password}
                                 onChange={handleChange}
                             />
                         </Form.Group>
-                        {errors.password1 &&
-                            errors.password1.map((message, idx) => (
+                        {errors.password &&
+                            errors.password.map((message, idx) => (
                                 <Alert variant="warning" key={idx}>
                                     {message}
                                 </Alert>
                             ))}
-                        <Form.Group className="mb-3" controlId="password2">
-                            <Form.Label className="d-none">
-                                Confirm password
-                            </Form.Label>
-                            <Form.Control
-                                className={styles.Input}
-                                type="password"
-                                placeholder="Confirm password"
-                                name="password2"
-                                value={password2}
-                                onChange={handleChange}
-                            />
-                        </Form.Group>
-                        {errors.password2 &&
-                            errors.password2.map((message, idx) => (
-                                <Alert variant="warning" key={idx}>
-                                    {message}
-                                </Alert>
-                            ))}
+
                         <Button
                             className={`${btnStyles.Button}  ${btnStyles.Wide} ${btnStyles.Bright}`}
                             type="submit"
@@ -112,31 +93,35 @@ const SignUpForm = () => {
                         </Button>
                         {errors.non_field_errors &&
                             errors.non_field_errors.map((message, idx) => (
-                                <Alert key={idx} variant="warning" className="mt-3">
+                                <Alert
+                                    key={idx}
+                                    variant="warning"
+                                    className="mt-3"
+                                >
                                     {message}
                                 </Alert>
                             ))}
                     </Form>
                 </Container>
                 <Container className={`mt-3 ${appStyles.Content}`}>
-                    <Link className={styles.Link} to="/signin">
-                        Already have an account? <span>Sign in</span>
+                    <Link className={styles.Link} to="/signup">
+                        Don't have an account? <span>Sign up now!</span>
                     </Link>
                 </Container>
             </Col>
             <Col
                 md={6}
-                className={`my-auto d-none d-md-block p-2 ${styles.SignUpCol}`}
+                className={`my-auto d-none d-md-block p-2 ${styles.SignInCol}`}
             >
                 <Image
                     className={`${appStyles.FillerImage}`}
                     src={
-                        "https://codeinstitute.s3.amazonaws.com/AdvancedReact/hero2.jpg"
+                        "https://codeinstitute.s3.amazonaws.com/AdvancedReact/hero.jpg"
                     }
                 />
             </Col>
         </Row>
     );
-};
+}
 
-export default SignUpForm;
+export default SignInForm;
