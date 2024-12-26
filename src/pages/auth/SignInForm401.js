@@ -24,7 +24,7 @@ function SignInForm() {
     });
     const { username, password } = signInData;
     const [errors, setErrors] = useState({});
-    const history = useNavigate();
+    const navigate = useNavigate();
 
     const handleChange = (e) => {
         setSignInData({
@@ -33,10 +33,68 @@ function SignInForm() {
         });
     };
 
+    // const handleSubmit = async (e) => {
+    //     e.preventDefault();
+    //     console.log("Submitting form with data:", signInData);
+    //     try {
+    //         // Log in the user and get the token
+    //         const loginResponse = await axios.post(
+    //             "http://127.0.0.1:8000/dj-rest-auth/login/",
+    //             signInData
+    //         );
+    //         console.log("Login response:", loginResponse);
+    //         console.log("Now you are logged in ");
+
+    //         const token = localStorage.getItem("jwt-auth");
+    //         console.log("jwt-auth", token);
+
+    //         // if (loginResponse && loginResponse.data) {
+    //         //     const { key } = loginResponse.data;
+    //         //     console.log("Login response data:", key);
+
+    //         //     // Store the token in localStorage
+    //         //     localStorage.setItem("jwt-auth", key);
+
+    //         //     // Fetch the user details
+    //         //     const userResponse = await axios.get(
+    //         //         "http://127.0.0.1:8000/dj-rest-auth/user/",
+    //         //         {
+    //         //             headers: {
+    //         //                 Authorization: `Bearer ${key}`,
+    //         //             },
+    //         //         }
+    //         //     );
+    //         //     console.log("User response:", userResponse.data);
+    //         //     setCurrentUser(userResponse.data);
+
+    //         //     // Navigate to home page on successful authentication
+    //         //     navigate("/");
+    //         // } else {
+    //         //     console.error(
+    //         //         "Login response is undefined or does not contain data."
+    //         //     );
+    //         // }
+
+    //         // Fetch the user details
+    //         const userResponse = await axios.get("/dj-rest-auth/user/", {
+    //             withCredentials: true,
+    //         });
+    //         console.log("Current user data: ", userResponse.data);
+    //         setCurrentUser(userResponse.data);
+
+    //         // Navigate to home page on successful authentication
+    //         navigate("/");
+    //     } catch (err) {
+    //         console.error("Error during form submission:", err);
+    //         setErrors(err.response?.data);
+    //     }
+    // };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         console.log("Submitting form with data:", signInData);
         try {
+            // Log in the user and get the token
             const { username, password } = signInData;
             const tokenUser = await axios.post(
                 "http://127.0.0.1:8000/api-auth/token/",
@@ -45,31 +103,51 @@ function SignInForm() {
                     password,
                 }
             );
-            const { access, refresh } = tokenUser.data;
+            const { accessToken, refreshToken } = tokenUser.data;
+            localStorage.setItem("access_token", accessToken);
+            localStorage.setItem("refresh_token", refreshToken);
             console.log("Token user:", tokenUser.data);
 
-            // Store tokens in localStorage
-            localStorage.setItem("access_token", access);
-            localStorage.setItem("refresh_token", refresh);
-
             // Set the token in the headers for subsequent requests
-            axios.defaults.headers.common["Authorization"] = `Bearer ${access}`;
+            axios.defaults.headers.common[
+                "Authorization"
+            ] = `Bearer ${accessToken}`;
 
-            // Fetch the user details
-            const userResponse = await axios.get(
-                "http://127.0.0.1:8000/dj-rest-auth/user/",
-                {
-                    headers: {
-                        Authorization: `Bearer ${access}`,
-                    },
-                }
+            const loginResponse = await axios.post(
+                "http://127.0.0.1:8000/dj-rest-auth/login/",
+                signInData
             );
-            setCurrentUser(userResponse.data);
-            console.log("Current user data: ", userResponse.data);
+            // Store the token in localStorage
+            const { key } = loginResponse.data;
+            localStorage.setItem("auth_token", key);
+            console.log("Full login response: ", loginResponse);
 
-            // On successful auth go to home page
-            history("/");
+            if (loginResponse && loginResponse.data) {
+                const { accessToken, refreshToken } = loginResponse.data;
+                console.log("Login response token:", accessToken);
 
+                // Store the token in localStorage
+                localStorage.setItem("jwt-auth", accessToken);
+
+                // Fetch the user details after storing the token
+                const userResponse = await axios.get(
+                    "http://127.0.0.1:8000/dj-rest-auth/user/",
+                    {
+                        headers: {
+                            Authorization: `Bearer ${accessToken}`,
+                        },
+                    }
+                );
+                console.log("User response:", userResponse.data);
+                setCurrentUser(userResponse.data);
+
+                // Navigate to home page on successful authentication
+                navigate("/");
+            } else {
+                console.error(
+                    "Login response is undefined or does not contain data."
+                );
+            }
         } catch (err) {
             console.error("Error during form submission:", err);
             setErrors(err.response?.data);

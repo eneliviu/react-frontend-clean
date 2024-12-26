@@ -1,12 +1,40 @@
 // rafce
 
-import React from "react";
+import React, { useContext } from "react";
 import { Container, Nav, Navbar } from "react-bootstrap";
 import logo from "../assets/logo.png";
 import styles from "../styles/NavBar.module.css";
 import { NavLink } from "react-router-dom";
+import { CurrentUserContext } from "../App";
 
 const NavBar = () => {
+    const currentUser = useContext(CurrentUserContext);
+    console.log("Current user:", currentUser);
+    const loggedInIcons = <>{currentUser?.username}</>;
+
+    const loggedOutIcons = (
+        <>
+            <NavLink
+                exact="true"
+                className={({ isActive }) =>
+                    `${styles.NavLink} ${isActive ? styles.Active : ""}`
+                }
+                to="/signin"
+            >
+                <i className="fas fa-sign-in-alt"></i>Sign in
+            </NavLink>
+            <NavLink
+                exact="true"
+                className={({ isActive }) =>
+                    `${styles.NavLink} ${isActive ? styles.Active : ""}`
+                }
+                to="/signup"
+            >
+                <i className="fas fa-user-plus"></i>Sign up
+            </NavLink>
+        </>
+    );
+
     return (
         <Navbar className={styles.NavBar} expand="md" fixed="top">
             <Container>
@@ -29,28 +57,7 @@ const NavBar = () => {
                         >
                             <i className="fas fa-home"></i>Home
                         </NavLink>
-                        <NavLink
-                            exact="true"
-                            className={({ isActive }) =>
-                                `${styles.NavLink} ${
-                                    isActive ? styles.Active : ""
-                                }`
-                            }
-                            to="/signin"
-                        >
-                            <i className="fas fa-sign-in-alt"></i>Sign in
-                        </NavLink>
-                        <NavLink
-                            exact="true"
-                            className={({ isActive }) =>
-                                `${styles.NavLink} ${
-                                    isActive ? styles.Active : ""
-                                }`
-                            }
-                            to="/signup"
-                        >
-                            <i className="fas fa-user-plus"></i>Sign up
-                        </NavLink>
+                        {currentUser ? loggedInIcons : loggedOutIcons}
                     </Nav>
                 </Navbar.Collapse>
             </Container>
