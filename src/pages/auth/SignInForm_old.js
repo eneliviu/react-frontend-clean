@@ -17,6 +17,7 @@ import { useSetCurrentUser } from "../../contexts/CurrentUserContext";
 
 function SignInForm() {
     const setCurrentUser = useSetCurrentUser();
+
     const [signInData, setSignInData] = useState({
         username: "",
         password: "",
@@ -45,7 +46,6 @@ function SignInForm() {
         console.log("Submitting form with data:", signInData);
         try {
             const { username, password } = signInData;
-
             const tokenUser = await axios.post(
                 "http://127.0.0.1:8000/api-auth/token/",
                 {
@@ -63,10 +63,28 @@ function SignInForm() {
 
             // Fetch the user details
             const userResponse = await axios.get(
-                "http://127.0.0.1:8000/dj-rest-auth/user/"
+                "http://127.0.0.1:8000/dj-rest-auth/user/",
+                {
+                    headers: {
+                        Authorization: `Bearer ${access}`,
+                    },
+                }
             );
             console.log("Current user data: ", userResponse.data);
+            console.log(
+                "URL to profile data: ",
+                `http://127.0.0.1:8000/profiles/${userResponse.data.pk}/`
+            );
+            const userData = await axios.get(
+                `http://127.0.0.1:8000/profiles/${userResponse.data.pk}/`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${access}`,
+                    },
+                }
+            );
 
+            console.log("Profile data: ", userData.data);
             // Set the current user in the context
             setCurrentUser(userResponse.data);
 
@@ -106,7 +124,7 @@ function SignInForm() {
                             <Form.Label className="d-none">username</Form.Label>
                             <Form.Control
                                 className={styles.Input}
-                                type="password"
+                                type="text"
                                 placeholder="Password"
                                 name="password"
                                 value={password}
@@ -124,7 +142,7 @@ function SignInForm() {
                             className={`${btnStyles.Button}  ${btnStyles.Wide} ${btnStyles.Bright}`}
                             type="submit"
                         >
-                            Sign in
+                            Sign up
                         </Button>
                         {errors.non_field_errors &&
                             errors.non_field_errors.map((message, idx) => (

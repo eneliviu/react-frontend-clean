@@ -1,4 +1,4 @@
-import React, { useEffect, useState, createContext } from "react";
+import React from "react";
 import styles from "./App.module.css";
 import { Container } from "react-bootstrap";
 import MapLeaflet from "./components/MapLeaflet";
@@ -9,63 +9,39 @@ import { Route, Routes } from "react-router-dom";
 import "./api/axiosDefaults";
 import SignUpForm from "./pages/auth/SignUpForm";
 import SignInForm from "./pages/auth/SignInForm";
-import axios from "axios";
-
-export const CurrentUserContext = createContext();
-export const SetCurrentUserContext = createContext();
+// import axios from "axios";
+// import { useEffect } from "react";
 
 function App() {
-    const [currentUser, setCurrentUser] = useState(null);
 
-    const handleMount = async () => {
-        try {
-            const { data } = await axios.get("/dj-rest-auth/user/");
-            setCurrentUser(data);
-        } catch (err) {
-            console.error(err);
-        }
-    };
-
-      useEffect(() => {
-          handleMount();
-      }, []);
+    // Call this function on page load to set the token from local storage
+    // useEffect(() => {
+    //     const token = localStorage.getItem("access_token");
+    //     axios.defaults.headers.common["Authorization"] = token
+    //         ? `Bearer ${token}`
+    //         : undefined;
+    // }, []);
 
     return (
-        <CurrentUserContext.Provider value={currentUser}>
-            <SetCurrentUserContext.Provider value={setCurrentUser}>
-                <div className={styles.App}>
-                    <NavBar />
-                    <Container className={styles.Main}>
-                        <Routes>
-                            <Route
-                                exact
-                                path="/"
-                                element={<h1>Home page</h1>}
-                            />
-                            <Route
-                                exact
-                                path="/signin"
-                                element={<SignInForm />}
-                            />
-                            <Route
-                                exact
-                                path="/signup"
-                                element={<SignUpForm />}
-                            />
-                            <Route path="*" element={<p>Page not found</p>} />
-                        </Routes>
-                    </Container>
-                    <div style={{ paddingTop: "80px" }}>
-                        <Button variant="primary">Primary</Button>
-                    </div>
-                    <div style={{ paddingTop: "80px" }}>
-                        <MapLeaflet />
-                    </div>
+        <div className={styles.App}>
+            <NavBar />
+            <Container className={styles.Main}>
+                <Routes>
+                    <Route exact path="/" element={<h1>Home page</h1>} />
+                    <Route exact path="/signin" element={<SignInForm />} />
+                    <Route exact path="/signup" element={<SignUpForm />} />
+                    <Route path="*" element={<p>Page not found</p>} />
+                </Routes>
+            </Container>
+            <div style={{ paddingTop: "80px" }}>
+                <Button variant="primary">Primary</Button>
+            </div>
+            <div style={{ paddingTop: "80px" }}>
+                <MapLeaflet />
+            </div>
 
-                    <Footer />
-                </div>
-            </SetCurrentUserContext.Provider>
-        </CurrentUserContext.Provider>
+            <Footer />
+        </div>
     );
 }
 

@@ -1,16 +1,93 @@
 // rafce
 
-import React, { useContext } from "react";
+import React from "react";
 import { Container, Nav, Navbar } from "react-bootstrap";
 import logo from "../assets/logo.png";
 import styles from "../styles/NavBar.module.css";
 import { NavLink } from "react-router-dom";
-import { CurrentUserContext } from "../App";
+import {
+    useCurrentUser,
+    useSetCurrentUser,
+} from "../contexts/CurrentUserContext";
+import Avatar from "./Avatar";
+import axios from "axios";
+import useClickOutsideToggle from "../hooks/useClickOutsideToggle";
 
 const NavBar = () => {
-    const currentUser = useContext(CurrentUserContext);
-    console.log("Current user:", currentUser);
-    const loggedInIcons = <>{currentUser?.username}</>;
+    // Access the data from the CurrentUserContext
+    const currentUser = useCurrentUser();
+    const setCurrentUser = useSetCurrentUser();
+
+    const { expanded, setExpanded, ref } = useClickOutsideToggle();
+
+    const handleSignOut = async () => {
+        try {
+            await axios.post("/dj-rest-auth/logout/");
+            localStorage.removeItem("access_token");
+            localStorage.removeItem("refresh_token");
+            delete axios.defaults.headers.common["Authorization"];
+            setCurrentUser(null);
+        } catch (err) {
+            console.error("Failed to sign out:", err);
+        }
+    };
+
+    const addPostIcon = (
+        <NavLink
+            exact="true"
+            className={({ isActive }) =>
+                `${styles.NavLink} ${isActive ? styles.Active : ""}`
+            }
+            to="/posts/create"
+        >
+            <i className="fas fa-plus-square"></i>Add post
+        </NavLink>
+    );
+
+    const loggedInIcons = (
+        <>
+            <NavLink
+                exact="true"
+                className={({ isActive }) =>
+                    `${styles.NavLink} ${isActive ? styles.Active : ""}`
+                }
+                to="/feed"
+            >
+                <i className="fas fa-stream"></i>Feed
+            </NavLink>
+
+            <NavLink
+                exact="true"
+                className={({ isActive }) =>
+                    `${styles.NavLink} ${isActive ? styles.Active : ""}`
+                }
+                to="/liked"
+            >
+                <i className="fas fa-heart"></i>Liked
+            </NavLink>
+
+            <NavLink
+                exact="true"
+                className={styles.NavLink}
+                to="/"
+                onClick={handleSignOut}
+            >
+                <i className="fas fa-sign-out-alt"></i>Sign out
+            </NavLink>
+
+            <NavLink
+                exact="true"
+                className={styles.NavLink}
+                to={`/profiles/${currentUser?.profile_id}`}
+            >
+                <Avatar
+                    src={currentUser?.profile_image}
+                    height={40}
+                    text="Profile"
+                />
+            </NavLink>
+        </>
+    );
 
     const loggedOutIcons = (
         <>
@@ -36,14 +113,24 @@ const NavBar = () => {
     );
 
     return (
-        <Navbar className={styles.NavBar} expand="md" fixed="top">
+        <Navbar
+            expanded={expanded}
+            className={styles.NavBar}
+            expand="md"
+            fixed="top"
+        >
             <Container>
                 <NavLink to="/">
                     <Navbar.Brand>
                         <img src={logo} alt="logo" height="45" />
                     </Navbar.Brand>
                 </NavLink>
-                <Navbar.Toggle aria-controls="basic-navbar-nav" />
+                {currentUser && addPostIcon}
+                <Navbar.Toggle
+                    ref={ref}
+                    onClick={() => setExpanded(!expanded)}
+                    aria-controls="basic-navbar-nav"
+                />
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="ms-auto text-start">
                         <NavLink
