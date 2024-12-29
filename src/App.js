@@ -9,6 +9,7 @@ import { Route, Routes } from "react-router-dom";
 import "./api/axiosDefaults";
 import SignUpForm from "./pages/auth/SignUpForm";
 import SignInForm from "./pages/auth/SignInForm";
+import PostCreateForm from "./pages/posts/PostCreateForm";
 // import axios from "axios";
 // import { useEffect } from "react";
 
@@ -30,15 +31,16 @@ function App() {
                     <Route exact path="/" element={<h1>Home page</h1>} />
                     <Route exact path="/signin" element={<SignInForm />} />
                     <Route exact path="/signup" element={<SignUpForm />} />
+                    <Route exact path="/posts/create" element={<PostCreateForm/>} />
                     <Route path="*" element={<p>Page not found</p>} />
                 </Routes>
             </Container>
-            <div style={{ paddingTop: "80px" }}>
+            {/* <div style={{ paddingTop: "80px" }}>
                 <Button variant="primary">Primary</Button>
             </div>
             <div style={{ paddingTop: "80px" }}>
                 <MapLeaflet />
-            </div>
+            </div> */}
 
             <Footer />
         </div>

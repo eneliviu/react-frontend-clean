@@ -1,0 +1,2 @@
+** Creating posts
+As a logged in user, I can create a post to share it  with everyone else on the platform.
