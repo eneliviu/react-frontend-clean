@@ -10,18 +10,11 @@ import "./api/axiosDefaults";
 import SignUpForm from "./pages/auth/SignUpForm";
 import SignInForm from "./pages/auth/SignInForm";
 import PostCreateForm from "./pages/posts/PostCreateForm";
+import PostPage from "./pages/posts/PostPage";
 // import axios from "axios";
 // import { useEffect } from "react";
 
 function App() {
-
-    // Call this function on page load to set the token from local storage
-    // useEffect(() => {
-    //     const token = localStorage.getItem("access_token");
-    //     axios.defaults.headers.common["Authorization"] = token
-    //         ? `Bearer ${token}`
-    //         : undefined;
-    // }, []);
 
     return (
         <div className={styles.App}>
@@ -31,7 +24,8 @@ function App() {
                     <Route exact path="/" element={<h1>Home page</h1>} />
                     <Route exact path="/signin" element={<SignInForm />} />
                     <Route exact path="/signup" element={<SignUpForm />} />
-                    <Route exact path="/posts/create" element={<PostCreateForm/>} />
+                    <Route exact path="/posts/create" element={<PostCreateForm />} />
+                    <Route exact path="/posts/:id" element={<PostPage />} />
                     <Route path="*" element={<p>Page not found</p>} />
                 </Routes>
             </Container>
@@ -42,7 +36,7 @@ function App() {
                 <MapLeaflet />
             </div> */}
 
-            <Footer />
+            {/* <Footer /> */}
         </div>
     );
 }

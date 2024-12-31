@@ -1,2 +1,11 @@
 ** Creating posts
 As a logged in user, I can create a post to share it  with everyone else on the platform.
+As a user I  can view the details of a single post so that I can learn more about it.
+
+
+**PROMTS
+I will provide three files from a React frontend app that allows users to authenticate 
+in order to post images and comments. The files names are SIgnInFormj.s (for sign in), 
+CUrrentUserContext.js (for settings context) and PostCreateForm.js (to post images and comments). 
+The issues is the following: the user can login, can post an image with title and text, but after posting the image the user is sent to
+the /signin end point and is required to authenticate again, instead of remaining on the /

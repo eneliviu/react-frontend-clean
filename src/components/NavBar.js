@@ -22,11 +22,13 @@ const NavBar = () => {
 
     const handleSignOut = async () => {
         try {
-            await axios.post("/dj-rest-auth/logout/");
+            //await axios.post("/dj-rest-auth/logout/");
+            setCurrentUser(null);
             localStorage.removeItem("access_token");
             localStorage.removeItem("refresh_token");
             delete axios.defaults.headers.common["Authorization"];
-            setCurrentUser(null);
+            console.log("currentUser: ", currentUser);
+
         } catch (err) {
             console.error("Failed to sign out:", err);
         }
@@ -40,14 +42,13 @@ const NavBar = () => {
             }
             to="/posts/create"
         >
-            <i className="fas fa-plus-square"></i>Add post
+            <i className="fas fa-plus-square"></i>Add Post
         </NavLink>
     );
 
     const loggedInIcons = (
         <>
             <NavLink
-                exact="true"
                 className={({ isActive }) =>
                     `${styles.NavLink} ${isActive ? styles.Active : ""}`
                 }
@@ -57,19 +58,18 @@ const NavBar = () => {
             </NavLink>
 
             <NavLink
-                exact="true"
                 className={({ isActive }) =>
                     `${styles.NavLink} ${isActive ? styles.Active : ""}`
                 }
                 to="/liked"
             >
                 <i className="fas fa-heart"></i>Liked
+                {/* <span className="d-none d-md-inline">Liked</span> */}
             </NavLink>
 
             <NavLink
-                exact="true"
                 className={styles.NavLink}
-                to="/"
+                to="/signin"
                 onClick={handleSignOut}
             >
                 <i className="fas fa-sign-out-alt"></i>Sign out
@@ -83,7 +83,7 @@ const NavBar = () => {
                 <Avatar
                     src={currentUser?.profile_image}
                     height={40}
-                    text="Profile"
+                    text={currentUser?.username}
                 />
             </NavLink>
         </>
@@ -144,9 +144,12 @@ const NavBar = () => {
                         >
                             <i className="fas fa-home"></i>Home
                         </NavLink>
+
                         {currentUser ? loggedInIcons : loggedOutIcons}
+
                     </Nav>
                 </Navbar.Collapse>
+
             </Container>
         </Navbar>
     );
