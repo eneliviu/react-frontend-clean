@@ -1,7 +1,9 @@
 ** Creating posts
 As a logged in user, I can create a post to share it  with everyone else on the platform.
 As a user I  can view the details of a single post so that I can learn more about it.
-
+As a user I can view all the most recent posts,  so that I am up to date with the newest content.
+As  a user, I can search for posts with keywords, so that I can find the posts and user  profiles I am most interested in.
+As a user I can  keep scrolling through the images on the site that are loaded for me automatically so  that I don't have to click on "next page" button.
 
 **PROMTS
 I will provide three files from a React frontend app that allows users to authenticate 

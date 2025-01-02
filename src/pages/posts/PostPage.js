@@ -9,6 +9,10 @@ import { useParams } from "react-router-dom";
 import { axiosReq } from "../../api/axiosDefaults";
 import Post from "./Post";
 
+// Component that is responsible for displaying a single post along
+// with its details. It fetches the post data from the server using
+// the post ID from the URL parameters and then renders the Post
+// component to display the post.
 function PostPage() {
     const  {id} = useParams();
     const [post, setPost] = useState({results : []});

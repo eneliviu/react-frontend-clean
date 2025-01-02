@@ -101,7 +101,7 @@ const NavBar = () => {
                 <i className="fas fa-sign-in-alt"></i>Sign in
             </NavLink>
             <NavLink
-                exact="true"
+                // exact="true"
                 className={({ isActive }) =>
                     `${styles.NavLink} ${isActive ? styles.Active : ""}`
                 }
