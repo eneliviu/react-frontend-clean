@@ -2,13 +2,20 @@ import React from "react";
 import styles from "../../styles/Post.module.css";
 import { useCurrentUser } from "../../contexts/CurrentUserContext";
 import { Card, OverlayTrigger, Tooltip } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Avatar from "../../components/Avatar";
 import { axiosReq } from "../../api/axiosDefaults";
+import { MoreDropdown } from "../../components/MoreDropdown";
 
 // component that is responsible for rendering the details of a single post.
 // This component is used by both PostPage.js and PostsPage.js to display
 // individual posts.
+
+// TODO: Add a prop to determine if the post is being displayed on the post page
+// or the posts page. Use this prop to conditionally render the like and comment
+// buttons. If the post is being displayed on the post page, render the buttons.
+
+
 const Post = (props) => {
     const {
         id,
@@ -28,20 +35,37 @@ const Post = (props) => {
 
     const currentUser = useCurrentUser();
     const is_owner = currentUser?.username === owner;
+    const navigate = useNavigate();
 
-    const handleLikes = async () => {
+    const handleEdit = () => {
+        navigate(`/posts/${id}/edit`);
+    };
+
+    const handleDelete = async () => {
         try {
-            const { data } = await axiosReq.post(`/likes/`, {post: id});
+            await axiosReq.delete(`/posts/${id}/`);
+            navigate("*")  // Redirect to the 404 page;
+        } catch (err) {
+            console.log(err);
+        }
+    };
+
+    const handleLike = async () => {
+        try {
+            const { data } = await axiosReq.post(`/likes/`, { post: id });
             console.log("data: ", data);
             setPosts((prevPosts) => ({
                 ...prevPosts,
                 results: prevPosts.results.map((post) => {
                     return post.id === id
-                    ? {...post, likes_count: post.likes_count + 1, like_id: data.id}
-                    : post;
+                        ? {
+                              ...post,
+                              likes_count: post.likes_count + 1,
+                              like_id: data.id,
+                          }
+                        : post;
                 }),
             }));
-
         } catch (err) {
             console.error("Failed to like post:", err);
         }
@@ -54,17 +78,20 @@ const Post = (props) => {
                 ...prevPosts,
                 results: prevPosts.results.map((post) => {
                     return post.id === id
-                    ? {...post, likes_count: post.likes_count - 1, like_id: null}
-                    : post;
+                        ? {
+                              ...post,
+                              likes_count: post.likes_count - 1,
+                              like_id: null,
+                          }
+                        : post;
                 }),
             }));
         } catch (err) {
             console.error("Failed to unlike post:", err);
         }
-
     };
-
-
+    console.log("is_owner: ", is_owner);
+    console.log("postPage: ", postPage);
     return (
         <Card className={styles.Post}>
             <Card.Body>
@@ -76,18 +103,15 @@ const Post = (props) => {
                         <Avatar src={profile_image} height={55} />
                         <span className="ml-2">{owner}</span>
                     </Link>
+
                     <div className="d-flex align-items-center">
                         <span>{updated_at}</span>
-                        {is_owner && postPage && (
-                            <OverlayTrigger
-                                placement="top"
-                                overlay={
-                                    <Tooltip id={`tooltip-top`}>Edit</Tooltip>
-                                }
-                            >
-                                <i className="fas fa-edit ml-2"></i>
-                            </OverlayTrigger>
-                        )}
+                        {is_owner && (
+                                <MoreDropdown
+                                    handleEdit={handleEdit}
+                                    handleDelete={handleDelete}
+                                ></MoreDropdown>
+                            )}
                     </div>
                 </div>
             </Card.Body>
@@ -114,7 +138,7 @@ const Post = (props) => {
                             <i className={`fas fa-heart ${styles.Heart}`} />
                         </span>
                     ) : currentUser ? (
-                        <span onClick={handleLikes}>
+                        <span onClick={handleLike}>
                             <i
                                 className={`far fa-heart ${styles.HeartOutline}`}
                             />
