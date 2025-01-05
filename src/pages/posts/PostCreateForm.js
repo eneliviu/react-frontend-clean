@@ -16,8 +16,10 @@ import Asset from "../../components/Asset";
 // Import the configured axios instance
 import { axiosReq } from "../../api/axiosDefaults";
 import { Alert } from "react-bootstrap";
+import { useRedirect } from "../../hooks/useRedirect";
 
 function PostCreateForm() {
+    useRedirect("loggedOut");
     const [errors, setErrors] = useState({});
     const navigate = useNavigate();
 

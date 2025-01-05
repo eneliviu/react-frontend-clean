@@ -15,6 +15,7 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import CommentCreateForm from "../comments/CommentCreateForm";
 import { useCurrentUser } from "../../contexts/CurrentUserContext";
 import { fetchMoreData } from "../../utils/utils";
+import PopularProfiles from "../profiles/PopularProfiles";
 
 // Component that is responsible for displaying a single post along
 // with its details. It fetches the post data from the server using
@@ -51,7 +52,7 @@ function PostPage() {
     return (
         <Row className="h-100">
             <Col className="py-2 p-0 p-lg-2" lg={8}>
-                <p>Popular profiles for mobile</p>
+                <PopularProfiles mobile />
                 {<Post {...post.results[0]} setPosts={setPost} />}
                 <Container className={appStyles.Content}>
                     {currentUser ? (
@@ -67,14 +68,7 @@ function PostPage() {
                     ) : null}
 
                     {comments.results.length ? (
-                        // comments.results.map((comment) => (
-                        //     <Comment
-                        //         key={comment.id}
-                        //         {...comment}
-                        //         setPost={setPost}
-                        //         setComments={setComments}
-                        //     />
-                        // )) // Render comments
+                        // Render comments
                         <InfiniteScroll
                             children={comments.results.map((comment) => (
                                 <Comment
@@ -97,7 +91,7 @@ function PostPage() {
                 </Container>
             </Col>
             <Col lg={4} className="d-none d-lg-block p-0 p-lg-2">
-                Popular profiles for desktop
+                <PopularProfiles />
             </Col>
         </Row>
     );

@@ -164,19 +164,25 @@ import axios from "axios";
 import styles from "../../styles/SignInUpForm.module.css";
 import btnStyles from "../../styles/Button.module.css";
 import appStyles from "../../App.module.css";
-import {
-    Form,
-    Button,
-    Col,
-    Row,
-    Container,
-    Alert,
-    Image,
-} from "react-bootstrap";
+
+// Optimize your bootstrap imports
+import Form from "react-bootstrap/Form";
+import Button from "react-bootstrap/Button";
+import Col from "react-bootstrap/Col";
+import Row from "react-bootstrap/Row";
+import Container from "react-bootstrap/Container";
+import Alert from "react-bootstrap/Alert";
+import Image from "react-bootstrap/Image";
+
+
 import { useSetCurrentUser } from "../../contexts/CurrentUserContext";
+import { useRedirect } from "../../hooks/useRedirect";
+import { setTokenTimestamp } from "../../utils/utils";
 
 function SignInForm() {
     const setCurrentUser = useSetCurrentUser();
+    useRedirect("loggedIn");
+
     const [signInData, setSignInData] = useState({
         username: "",
         password: "",
@@ -200,6 +206,7 @@ function SignInForm() {
                 { username, password }
             );
             const { access, refresh } = tokenUser.data;
+            //setTokenTimestamp(tokenUser.data);
             localStorage.setItem("access_token", access);
             localStorage.setItem("refresh_token", refresh);
 
@@ -213,8 +220,8 @@ function SignInForm() {
                 }
             );
             setCurrentUser(userResponse.data);
+            navigate(-1); // Navigate back to the previous page
 
-            navigate("/");
         } catch (err) {
             console.error("Error during form submission:", err);
             setErrors(

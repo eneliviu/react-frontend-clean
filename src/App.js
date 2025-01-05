@@ -11,13 +11,19 @@ import PostEditForm from "./pages/posts/PostEditForm";
 import PostPage from "./pages/posts/PostPage";
 import PostsPage from "./pages/posts/PostsPage";
 import { useCurrentUser } from "./contexts/CurrentUserContext";
+import ProfilePage from "./pages/profiles/ProfilePage";
+import ProfileEditForm from "./pages/profiles/ProfileEditForm";
+import UsernameForm from "./pages/profiles/UsernameForm";
+import UserPasswordForm from "./pages/profiles/UserPasswordForm";
+import NotFound from "./components/NotFound";
+
 // import MapLeaflet from "./components/MapLeaflet";
 // import Button from "react-bootstrap/Button";
 // import Footer from "./components/Footer";
 
 function App() {
     const currentUser = useCurrentUser();
-    const profile_id = currentUser?.profile?.id || "";
+    //const profile_id = currentUser?.profile?.id || "";
 
     console.log("currentUser: ", currentUser);
 
@@ -37,7 +43,8 @@ function App() {
                         element={
                             <PostsPage
                                 message="No results found. Adjust the search keyword or follow a user."
-                                filter={`owner__followed__owner__profile=${profile_id}&`}
+                                //filter={`owner__followed__owner__profile=${profile_id}&`}
+                                filter={`followed_users=True&`}
                             />
                         }
                     />
@@ -56,7 +63,20 @@ function App() {
                     <Route path="/posts/create" element={<PostCreateForm />} />
                     <Route exact path="/posts/:id" element={<PostPage />} />
                     <Route path="/posts/:id/edit" element={<PostEditForm />} />
-                    <Route path="*" element={<p>Page not found</p>} />
+                    <Route path="/profiles/:id" element={<ProfilePage />} />
+                    <Route
+                        path="/profiles/:id/edit/username"
+                        element={<UsernameForm />}
+                    />
+                    <Route
+                        path="/profiles/:id/edit/password"
+                        element={<UserPasswordForm />}
+                    />
+                    <Route
+                        path="/profiles/:id/edit"
+                        element={<ProfileEditForm />}
+                    />
+                    <Route path="*" element={<NotFound/>} />
                 </Routes>
             </Container>
             {/* <div style={{ paddingTop: "80px" }}>

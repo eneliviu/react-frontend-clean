@@ -1,4 +1,5 @@
 import axios from "axios";
+import { shouldRefreshToken } from "../utils/utils";
 // axios.defaults.baseURL = "https://dj-drf-api-763634fa56e5.herokuapp.com";
 axios.defaults.baseURL = "http://127.0.0.1:8000";
 
@@ -14,7 +15,9 @@ export const axiosRes = axios.create();
 
 // Set up the request interceptor to include the token in the headers for axiosRes
 axiosReq.interceptors.request.use(
-    (config) => {
+    async (config) => {
+        // if (shouldRefreshToken()){
+        // }
         const accessToken = localStorage.getItem("access_token");
         if (accessToken) {
             config.headers["Authorization"] = `Bearer ${accessToken}`;
@@ -28,7 +31,7 @@ axiosReq.interceptors.request.use(
 
 // Set up the response interceptor to handle token refresh for axiosRes
 axiosRes.interceptors.response.use(
-    (response) => {
+    async (response) => {
         return response;
     },
     async (error) => {

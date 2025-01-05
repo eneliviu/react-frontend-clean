@@ -18,10 +18,16 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import { fetchMoreData } from "../../utils/utils";
 import PopularProfiles from "../profiles/PopularProfiles";
 
+
+import { useCurrentUser } from "../../contexts/CurrentUserContext";
+
 // component that is responsible for displaying a list of posts.
 // It fetches the posts data from the server using an optional filter
 // and then renders a list of Post components to display each post.
 function PostsPage({ message, filter = "" }) {
+
+    const currentUser = useCurrentUser();
+
     const [posts, setPosts] = useState({ results: [] });
     console.log("posts: ", posts);
     const [hasLoaded, setHasLoaded] = useState(false);
@@ -51,14 +57,13 @@ function PostsPage({ message, filter = "" }) {
 
         //  Clear the timer if the component unmounts
         return () => clearTimeout(timer);
-    }, [filter, query, pathname]);
+    }, [filter, query, pathname, currentUser]);
 
     return (
         <Row className="h-100">
             <Col className="py-2 p-0 p-lg-2" lg={8}>
-                
-                <PopularProfiles mobile />
 
+                <PopularProfiles mobile />
 
                 <i className={`fas fa-search ${styles.SearchIcon}`} />
                 <Form

@@ -8,6 +8,9 @@ As a post owner I can edit my post so that I can make corrections or  update my 
 As a logged in user I can add comments to a post so that I can share my thoughts about the post
 As a user, I would like to read comments left by users under posts so  that I can be in touch with the community
 As an owner of a comment I can edit my comment so that I can fix or update my existing comment
+As a user, I can view basic profile information like profile picture and the name so  that I can easily check a user's profile page.
+As a user I can view other users profiles so that I can see their profile stats and learn more about them.
+As a logged in user I can follow and unfollow other users, so that I can see and remove posts by specific users in my post feed
 
 
 
