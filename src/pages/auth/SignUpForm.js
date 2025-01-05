@@ -13,10 +13,10 @@ import {
     Alert,
 } from "react-bootstrap";
 import axios from "axios";
-import { useRedirect } from "../../hooks/useRedirect";
+// import { useRedirect } from "../../hooks/useRedirect";
 
 const SignUpForm = () => {
-    useRedirect("loggedIn");
+    // useRedirect("loggedIn");
     const [signUpData, setSignUpData] = useState({
         username: "",
         password1: "",
